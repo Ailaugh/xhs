@@ -1,16 +1,23 @@
-import time
-import Sign
+import requests,base64
 
-token = {
-    "x-legacy-smid": "20241201002052dfbec0c6a9179fb604fde1182a66db9c01f867aaa6e302c2",
-    "x-legacy-did": "283863a9-ed55-3523-a053-d2f37ca05f75",
-    "x-legacy-fid": "173298364610417612da23987ec865af31d2daa014d6",
-    "x-legacy-sid": "session.1732983709043320934796",
-    "x-mini-gid": "7c583d3f4cea546d79734234c4771a8f650cdd9947359ced77344525",
-    "x-mini-sig": "539b3190c42330a2e20ab84a5168c7ba905bae73ce0e035612101fe8cf35d96e",
-    "x-mini-mua": "eyJhIjoiRUNGQUFGMDEiLCJjIjoxMywiayI6ImE0ODUyMzQ5NzBhNmQzYjdkNzAwYWU2NWRkMjU0MTRjMjIyNGJjZTM0ZmNiNWEwNjM0MTU4ZmJhNjk1NmMwNmMiLCJwIjoiYSIsInMiOiI4OGIxMTgzZjZjNjY1ZjYwYjAxMGRmZDcyNDczNmNmMiIsInQiOnsiYyI6MCwiZCI6MCwiZiI6MCwicyI6NDA5OCwidCI6MCwidHQiOltdfSwidSI6IjAwMDAwMDAwYzI0YTJjNWIxYTNiMTUyMzM0ZjdiNjIxM2Q0NzdhNWQiLCJ2IjoiMi43LjQifQ.__nSMRZRIRwlZwdlfCEihZXN_brJxSD60V6L_919_j9x8Uiy4rY2HrUBqROQlq3gU9OYIQv2L5rpgNOxTdnHt5WSKznqw5casRH2Uodvp_yRW3clCkhh_vTAVyv1rpd3KdBOzgno0wBRg6NbN7KSEhbt3x3_4R35OLRLr5kHnuDohmQ1JNN4bb9qVKQDE6Uwx9ukwRf3bGe1u8zJOsiRrWCJ-TTgkCyDQ5Y5fvk8ce8DFZTTCM3HXJwjwfab7DcJyAFtABQuXY8xk4Gp7KsVvXhgfce3lZNOr9bScnGnHRegAnZd6IYRJMxPV87Ow084-EV-5oP9LXxLmNP-HrhYdrxFIkWcvK0brKI9AkVaDHB-hIj2Azc4mFUsA1CxLA2mCvldm3kpgfczvCuDCn8wpEX1dFWaHAz1sT5PXSOFc7tgL_kGSsbD6BexbFlxl2XwAvnkXCpPg-9DD3vIZ9IUQXehqNFZUDPC6hghfokJ-zWXjFBC35T28xbf_aLlsx_drPFruH1c3cIcSlpg7C5kTHC_1IwRUHoDFbQIiDxiimqu1y3iX485Fb5_Hdx6vlLswWBfMpfzsWMfGYY4SW7ZIgPuUu2qzxDDI59ZKyg_tHGB6QeIqLpVWgcO7GezOZEo4N5LkbqEbxwi53NL0cMittrwT_Kkmkiwrap98Ze7Py6rQRi0viwKU1tatS6td3VS2zh7ZUDXwPr5AWqevGVVFTKan_x-Yhd9qlztV5J-GV-_BaloxJvmDQdGrBCc5NaL7uLksqw0QIMtqQcoy1z1nc4iR4taJvPypK1vdNP9GYijB5mW-PXTx3wJllpoK2sBbWB0yyw-UmytLzUxko5N_CYZMcl80eO6Zv30SYh0lAdTgxvMMCFMuIHFp4dyooWGakpQbTO7NCWe6jaSoIXUmxlERbhC-oBtTVLwrZ5nbtVvOjI4HapR18km0MewNphfnKqgCOItIWtBAMUL6DH-_A.",
-    "xy-common-params": "fid=173298364610417612da23987ec865af31d2daa014d6&device_fingerprint=20241201002052dfbec0c6a9179fb604fde1182a66db9c01f867aaa6e302c2&device_fingerprint1=20241201002052dfbec0c6a9179fb604fde1182a66db9c01f867aaa6e302c2&cpu_name=qcom&gid=7c583d3f4cea546d79734234c4771a8f650cdd9947359ced77344525&device_model=phone&launch_id=1732983748&tz=Asia%2FShanghai&channel=share_package_common&versionName=8.60.1&overseas_channel=0&deviceId=283863a9-ed55-3523-a053-d2f37ca05f75&platform=android&sid=session.1732983709043320934796&identifier_flag=4&t=1732983748&project_id=ECFAAF&build=8601104&x_trace_page_current=explore_feed&lang=zh-Hans&app_id=ECFAAF01&uis=light&teenager=0",
-    "xy-platform-info": "platform=android&build=8601104&deviceId=283863a9-ed55-3523-a053-d2f37ca05f75",
-    "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 12; SM-A715F Build/TP1A.220624.014) Resolution/720*1280 Version/8.60.1 Build/8601104 Device/(samsung;SM-A715F) discover/8.60.1 NetType/CellNetwork",
-    "main_hmac": "sRLePFN+L2tfXdXDZIRp4767JpeFMsFkLdX2RLTtShOq79kIwybN8L1WVIUYiiUANCWlkMvnKcM89mGBMLrpJ+c44XFnUnsS5z9jQVPJMAEIRFInOGUM3yGWOfF7Rj0q"
+headers = {
+    'Host': 'mall.xiaohongshu.com',
+    'User-Agent': 'discover/8.69.4 (iPhone; iOS 17.6.1; Scale/3.00) Resolution/1179*2556 Version/8.69.4 Build/8694110 Device/(Apple Inc.;iPhone16,1) NetType/CellNetwork',
+    'xy-direction': '49',
+    'xy-scene': 'point=0&fs=0',
+    'X-B3-TraceId': '63e1c77f1bb23d61',
+    'Accept-Language': 'zh-Hans-CN;q=1, en-CN;q=0.9',
+    'x-legacy-did': '49879933-4925-4F79-BFA6-F3F49479EDD6',
+    'shield': 'XYAAAAAQAAAAEAAABTAAAAUzUWEe4xG1IYD9/c+qCLOlKGmTtFa+lG434IdeVXRa1GzIy3l79kT5389uJaz8Rc28R+o9RDFgw4EhOMbb/z1V4U8uKvdEay6+keYq8QUbO4nBSi',
+    'x-legacy-smid': '20240122173844e7ff1943e8893b4b3780e5c16529b60e0111c8c644120589',
+    'xy-platform-info': 'platform=iOS&version=8.69.4&build=8694110&deviceId=49879933-4925-4F79-BFA6-F3F49479EDD6&bundle=com.xingin.discover',
+    'Mode': 'gslb',
+    'xy-common-params': 'app_id=ECFAAF02&build=8694110&channel=AppStore&deviceId=49879933-4925-4F79-BFA6-F3F49479EDD6&device_fingerprint=20240122173844e7ff1943e8893b4b3780e5c16529b60e0111c8c644120589&device_fingerprint1=20240122173844e7ff1943e8893b4b3780e5c16529b60e0111c8c644120589&device_model=phone&dlang=zh&fid=1738247685-0-0-9fc8d3c2e56b47692721596b943bfc8e&gid=7c23a6f3aa545476dcd26476edff05fcdf679cd8473597ac770b1864&identifier_flag=0&is_mac=0&lang=zh-Hans&launch_id=760154420&overseas_channel=0&platform=iOS&project_id=ECFAAF&sid=session.1738245861699845576114&t=1738461691&teenager=0&tz=Asia/Shanghai&uis=light&version=8.69.4',
 }
+
+url = "https://mall.xiaohongshu.com/api/store/jpd/edith/detail/vision/primary?ext_query=%7B%22goodsId%22%3A%22678cc83bbac251000178c386%22%7D&sku_id=678cc83bbac251000178c386&source=user_page&trade_ext=eyJjaGFubmVsSW5mbyI6eyJjaGFubmVsIjoic2hvcCIsImV4dHJhSW5mbyI6IntcImdvb2RzTm90ZUlkXCI6XCI2NzVlNTFhNDAwMDAwMDAwMDYwMGY0ZjVcIn0ifX0%3D"
+response = requests.get(
+    url,
+    headers=headers,
+)
+print(response.json())
